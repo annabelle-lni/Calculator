@@ -19,7 +19,7 @@
   	
 	### 🖼️ Aperçu du projet
 ``` 
-1. Prenez une photo d'une équation simple (par ex. : `2x + 3 = 7`).  
+1. Prenez une photo d'une équation simple (par ex. : ` 8 x 6 = `).  
 2. Chargez l'image dans l'application.    
 3. Recevez la solution en un clin d'œil ! 
 
