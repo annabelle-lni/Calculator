@@ -4,13 +4,13 @@
 
 
 
-  ### 🌟 Fonctionnalités  
+### 🌟 Fonctionnalités  
 - **Reconnaissance d'image** : Identifie et lit les équations mathématiques dans une photo.  
 - **Calcul instantané** : Résout automatiquement les équations détectées.  
 - **Interface intuitive** : Simple et rapide à utiliser, même pour les non-initiés.  
 
 
- ### 🛠️ Technologies utilisées  
+### 🛠️ Technologies utilisées  
 - **Python** : Pour le traitement des calculs et la gestion de l'application.  
 - **OpenCV** : Pour la reconnaissance d'image et le traitement des photos.  
 - **Tesseract OCR** : Pour extraire le texte des images.  
