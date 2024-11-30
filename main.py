@@ -33,6 +33,20 @@ while True:
         cv2.imwrite("screen2.jpg", gray_frame)
 
 
+        # Ajouter du texte sur l'image
+        text = "Texte en bas à gauche"  # Texte à afficher
+        font = cv2.FONT_HERSHEY_SIMPLEX  # Police d'écriture
+        font_scale = 1  # Taille de la police
+        color = (255, 255, 255)  # Couleur du texte (blanc en BGR)
+        thickness = 2  # Épaisseur du texte
+
+        # Position du texte (en bas à gauche)
+        text_size = cv2.getTextSize(text, font, font_scale, thickness)[0]
+        text_x = 10  # Décalage horizontal
+        text_y = image.shape[0] - 10  # Décalage vertical (10 px au-dessus du bas)
+
+        # Ajouter le texte sur l'image
+        cv2.putText(image, text, (text_x, text_y), font, font_scale, color, thickness)
 
 
 
@@ -40,7 +54,6 @@ while True:
 
 
 
-        
         break
     elif key == 27 : #appuyer sur esc pour quitter 
         break
