@@ -1,0 +1,19 @@
+import cv2
+import os
+
+# Exemple d'image à sauvegarder (ici une image déjà lue avec cv2)
+image = cv2.imread("2.png")
+
+# Spécifier le répertoire de destination
+dossier_destination = "chemin"
+if not os.path.exists(dossier_destination):
+    os.makedirs(dossier_destination)  # Créer le dossier si nécessaire
+
+# Spécifier le nom du fichier de sauvegarde
+chemin_complet = os.path.join(dossier_destination, "image_sauvegardee.jpg")
+
+# Sauvegarder l'image
+if cv2.imwrite(chemin_complet, image):
+    print(f"L'image a été sauvegardée dans {chemin_complet}")
+else:
+    print("Erreur lors de la sauvegarde de l'image.")

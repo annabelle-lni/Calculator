@@ -2,7 +2,6 @@ import cv2
 import os
 import sys
 
-sys.path.append(os.path.abspath("/test1.py"))
 
 
 # Activer la caméra
@@ -13,6 +12,10 @@ if not camera.isOpened():
     exit()
 
 print("📰 Instructions : Appuyer sur 'ESPACE' pour un screen ou sur 'ESC' pour quitter.")
+print("📰 Instructions : Il y a 4 steps pour le traitement d'images :")
+print("     # screen\n     # nuance de gris \n     # inverser les couleurs\n     # contraste")
+
+
 
 while True:
     # Lire l'image de la caméra
@@ -33,9 +36,18 @@ while True:
         # Conversion en nuances de gris
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         cv2.imwrite("screen2.jpg", gray_frame)
+    
+        #inverser les couleurs
+        img_inv = cv2.bitwise_not(gray_frame)
+        cv2.imwrite("screen3.jpg", img_inv)
 
-        from test1 import addtext #add text
+        #accentuer le contraste
+        th, contraste = cv2.threshold(img_inv, 128, 192, cv2.THRESH_BINARY)
+        cv2.imwrite("screen4.jpg", contraste)
 
+
+
+        from addtextfile import addtext #add text
         break
 
     elif key == 27 : #appuyer sur esc pour quitter 
