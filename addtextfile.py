@@ -1,21 +1,20 @@
 import cv2
 import os
 
-
 def addtext(folder_path, texts, output_prefix="screen_t"):
 
     image_files = [f for f in os.listdir(folder_path) if f.endswith(('.jpg', '.jpeg', '.png', '.bmp', '.tiff'))]
 
     if len(image_files) != len(texts):
-        print("Erreur : le nombre d'images ne correspond pas au nombre de .")
+        print("Error: The number of images does not match the number of texts.")
         return
 
     for i, image_file in enumerate(image_files):
         image_path = os.path.join(folder_path, image_file)
         image = cv2.imread(image_path)
 
-        if image_path is None:
-            print(f"Erreur : Impossible de charger {image_path}")
+        if image is None:
+            print(f"Error: Unable to load {image_path}")
             continue
 
         text = texts[i]
@@ -29,20 +28,17 @@ def addtext(folder_path, texts, output_prefix="screen_t"):
 
         cv2.putText(image, text, (text_x, text_y), font, font_scale, color, thickness)
 
-
         output_file = f"{output_prefix}{i + 1}.jpg"
         cv2.imwrite(output_file, image)
-        print(f"🎀 Step {i+1} est sauvegardé sous: {output_file}")
+        print(f"🎀 Step {i+1} has been saved as: {output_file}")
 
-
-    print("Toutes les images ont été traitées.")
+    print("All images have been processed.")
 
 #image_files = ["screen1.jpg", "screen2.jpg", "screen3.jpg", "screen4.jpg"]
 folder_path = "path_label"
-texts = ["Step 1 : screen", 
-         "Step 2 : nuance de gris", 
-         "Step 3 : adaptive tresholding", 
-         "Step 4 : median filter"]
+texts = ["Step 1: screenshot", 
+         "Step 2: grayscale", 
+         "Step 3: adaptive thresholding", 
+         "Step 4: median filter"]
 
 addtext(folder_path, texts)
-

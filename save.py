@@ -3,21 +3,20 @@ import shutil
 
 def move_screen(filename, folder_name):
     
-    # Vérifier si le fichier existe
+    # Check if the file exists
     if not os.path.exists(filename):
-        print(f"Le fichier {filename} est introuvable.")
+        print(f"The file {filename} cannot be found.")
         return
     
-    # Créer le dossier s'il n'existe pas
+    # Create the folder if it doesn't exist
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
 
-    # Construire le chemin de destination
+    # Construct the destination path
     destination = os.path.join(folder_name, filename)
     
-    # Déplacer le fichier
+    # Move the file
     try:
         shutil.move(filename, destination)
     except Exception as e:
-        print(f"Erreur lors du déplacement de l'image : {e}")
-
+        print(f"Error while moving the image: {e}")
