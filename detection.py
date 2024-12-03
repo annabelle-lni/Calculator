@@ -2,37 +2,34 @@ import os
 import cv2
 import numpy as np
 
-def load_templates(numbers_path, signes_path):
+def load_templates(numbers_path, signs_path):
     templates = {}
 
-    # Charger les modèles pour les chiffres
     for i in range(10):
         template_path = os.path.join(numbers_path, f"num{i}.jpg")
         template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
         if template is not None:
             templates[str(i)] = template
         else:
-            print(f"Erreur : {template_path} introuvable ou non lisible.")
+            print(f"Error: {template_path} not found or unreadable.")
 
-    # Charger les modèles pour les signes
     operations = {"add": "+", "sub": "-", "mult": "*", "div": "/"}
     for key, symbol in operations.items():
-        template_path = os.path.join(signes_path, f"{key}.jpg")
+        template_path = os.path.join(signs_path, f"{key}.jpg")
         template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
         if template is not None:
             templates[symbol] = template
         else:
-            print(f"Erreur : {template_path} introuvable ou non lisible.")
+            print(f"Error: {template_path} not found or unreadable.")
 
     if not templates:
-        print("Aucun modèle valide chargé.")
+        print("No valid templates loaded.")
     return templates
 
 def compare_with_templates(extracted_img, templates):
     best_match = None
     max_val = 0
 
-    # Comparer chaque modèle avec l'image extraite
     for key, template in templates.items():
         extracted_img_resized = cv2.resize(extracted_img, (template.shape[1], template.shape[0]))
         result = cv2.matchTemplate(extracted_img_resized, template, cv2.TM_CCOEFF_NORMED)
@@ -44,20 +41,20 @@ def compare_with_templates(extracted_img, templates):
 
     return best_match
 
-def process_image(image, numbers_path, signes_path):
+def process_image(image, numbers_path, signs_path):
     if len(image.shape) != 2 or np.max(image) > 255 or np.min(image) < 0:
-        print("L'image n'est pas binaire.")
+        print("The image is not binary.")
         return
 
-    templates = load_templates(numbers_path, signes_path)
+    templates = load_templates(numbers_path, signs_path)
     contours, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     output_image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
     expression = []
-    elements = []  # Liste pour stocker les informations sur les éléments détectés (chiffres et signes)
+    elements = []
 
     for contour in contours:
-        if cv2.contourArea(contour) < 100:  # Ignorer les petites régions
+        if cv2.contourArea(contour) < 100:
             continue
 
         x, y, w, h = cv2.boundingRect(contour)
@@ -71,30 +68,25 @@ def process_image(image, numbers_path, signes_path):
         cv2.putText(output_image, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
         if match is not None:
-            # Ajouter l'élément trouvé (chiffre ou signe) et sa position
             elements.append((match, x))
 
-    # Trier les éléments détectés par leur position (x) pour maintenir l'ordre
     elements.sort(key=lambda x: x[1])
 
-    # Construire l'expression en respectant l'ordre
     for elem, _ in elements:
         expression.append(elem)
 
-    # Affichage de l'image avec les annotations
-    cv2.imshow("Résultat", output_image)
+    cv2.imshow("Result", output_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    # Vérifier et calculer l'expression
     if expression:
-        expr = ''.join(expression)  # Combiner les éléments de l'expression
-        print(f"Expression détectée : {expr}")
+        expr = ''.join(expression)
+        print(f"Detected expression: {expr}")
         try:
-            result = eval(expr)  # Calculer le résultat de l'expression
-            print(f"Le résultat de l'opération {expr} est : {result}")
+            result = eval(expr)
+            print(f"Result of operation {expr} is: {result}")
         except Exception as e:
-            print(f"Erreur dans le calcul : {e}")
+            print(f"Error in calculation: {e}")
 
 numbers_path = 'dataset\\Numbers'
 signes_path = 'dataset\\signes'
