@@ -1,19 +1,22 @@
 import cv2
-import os
 
-# Exemple d'image à sauvegarder (ici une image déjà lue avec cv2)
-image = cv2.imread("2.png")
+if __name__ == '__main__':
+    # Charger l'image en niveaux de gris
+    source = cv2.imread("screen5.jpg")
+    if source is None:
+        print("Image introuvable.")
+        exit()
 
-# Spécifier le répertoire de destination
-dossier_destination = "chemin"
-if not os.path.exists(dossier_destination):
-    os.makedirs(dossier_destination)  # Créer le dossier si nécessaire
+    # Appliquer un filtre médian
+    final1 = cv2.medianBlur(source, 10)
+    final2 = cv2.medianBlur(final1, 3)
 
-# Spécifier le nom du fichier de sauvegarde
-chemin_complet = os.path.join(dossier_destination, "image_sauvegardee.jpg")
 
-# Sauvegarder l'image
-if cv2.imwrite(chemin_complet, image):
-    print(f"L'image a été sauvegardée dans {chemin_complet}")
-else:
-    print("Erreur lors de la sauvegarde de l'image.")
+
+    # Afficher les images
+    cv2.imshow('Source_Picture', source)
+    cv2.imshow('Final_Picture1', final1)
+    #cv2.imshow('Final_Picture2', final2)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
